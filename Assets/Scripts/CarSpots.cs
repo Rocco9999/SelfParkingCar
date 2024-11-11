@@ -91,6 +91,8 @@ public class CarSpots : MonoBehaviour
             return;
         }
 
+        howManyCarsToHide = Random.Range(1, howManyCarsToHide);
+
         List<int> carsToHide = GetRandomNumsToHideCars(howManyCarsToHide);
         int carCounter = 0;
 

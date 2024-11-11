@@ -21,6 +21,9 @@ public class CarAgent : BaseAgent
     private List<GameObject> placedYellowRectangle = new List<GameObject>();
     private List<HashSet<(Vector3, int)>> allValidCenters;
     private List<GameObject> allDetectedLineObjects;
+    private float timeStationary;
+    private float minDistance;
+    public Vector3 nearestGoal;
 
     public override void Initialize()
     {
@@ -60,6 +63,9 @@ public class CarAgent : BaseAgent
     public override void OnEpisodeBegin()
     {
         Debug.Log("Inizio di un nuovo episodio");
+        timeStationary = 0f; // Reset del timer
+        minDistance = float.MaxValue;
+        nearestGoal = Vector3.zero;
 
         // Imposta lo stato iniziale su ricerca parcheggio
         currentState = AgentState.SearchingForParking;
@@ -72,7 +78,7 @@ public class CarAgent : BaseAgent
 
         allValidCenters = new List<HashSet<(Vector3, int)>>();
         allDetectedLineObjects = new List<GameObject>();
-
+        
         ResetGoalsAndRectangles();
         ResetParkingLotArea();
     }
@@ -247,6 +253,22 @@ public class CarAgent : BaseAgent
         return allValidCenters != null && allValidCenters.Count > 0;
     }
 
+    private void FindNearestGoal()
+    {
+        foreach (var centerSet in allValidCenters)
+        {
+            foreach (var (position, _) in centerSet)
+            {
+                float distance = Vector3.Distance(transform.position, position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestGoal = position;
+                }
+            }
+        }
+    }
+
     public override void OnActionReceived(float[] vectorAction)
     {
         var direction = Mathf.FloorToInt(vectorAction[0]);
@@ -263,11 +285,27 @@ public class CarAgent : BaseAgent
                 // Ricompensa unica per il rilevamento del parcheggio
                 AddReward(0.2f);
                 Debug.Log("Ricompensa per rilevamento del parcheggio.");
+                FindNearestGoal();
                 currentState = AgentState.Parking;
             }
         }
         else if (currentState == AgentState.Parking)
         {
+            // Controllo della velocità per rilevare se l'auto è ferma
+            if (carController.carRigidBody.velocity.magnitude < 0.01f)
+            {
+                timeStationary += Time.deltaTime;
+                if (timeStationary >= 1.5f)
+                {
+                    // Penalità per essere rimasti fermi troppo a lungo
+                    TakeAwayPoints(-0.2f);
+                    Debug.Log("Penalità per essere rimasti fermi per troppo tempo.");
+                }
+            }
+            else
+            {
+                timeStationary = 0f; // Reset del timer se l'auto si muove
+            }
             // Logica standard per la fase di parcheggio: utilizza il vettore d'azione normalmente
             switch (direction)
             {
@@ -301,6 +339,9 @@ public class CarAgent : BaseAgent
         if (maneuverCounter != null)
         {
             maneuverCounter.EvaluateManeuverCount(isFinal);
+        } else if (isFinal)
+        {
+            AddReward(0.8f);
         }
 
         if (isFinal)
