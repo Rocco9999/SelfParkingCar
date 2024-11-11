@@ -2971,7 +2971,7 @@ MonoBehaviour:
   startVerticalOffset: 3
   endVerticalOffsetBase: -0.7
   numberOfSensor: 15
-  rayVisible: 1
+  rayVisible: 0
   sphereCastRadius: 0.2
 --- !u!114 &1274937984
 MonoBehaviour:
@@ -5897,12 +5897,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8208582799193707272, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
       propertyPath: m_BehaviorType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8208582799193707272, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 7c4296b689fd319408cd5b4bc83fe93e, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8208582799193707272, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
       value: 17

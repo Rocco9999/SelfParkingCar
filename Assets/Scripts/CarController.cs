@@ -31,7 +31,7 @@ public class CarController : MonoBehaviour
 
     public bool IsAutonomous { get; set; } = false;
 
-    private Rigidbody carRigidBody;
+    public Rigidbody carRigidBody;
 
     public enum Direction
     {

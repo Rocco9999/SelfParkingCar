@@ -21,6 +21,7 @@ public class CarAgent : BaseAgent
     private List<GameObject> placedYellowRectangle = new List<GameObject>();
     private List<HashSet<(Vector3, int)>> allValidCenters;
     private List<GameObject> allDetectedLineObjects;
+    private float timeStationary;
 
     public override void Initialize()
     {
@@ -60,6 +61,8 @@ public class CarAgent : BaseAgent
     public override void OnEpisodeBegin()
     {
         Debug.Log("Inizio di un nuovo episodio");
+
+        timeStationary = 0f;
 
         // Imposta lo stato iniziale su ricerca parcheggio
         currentState = AgentState.SearchingForParking;
@@ -268,6 +271,14 @@ public class CarAgent : BaseAgent
         }
         else if (currentState == AgentState.Parking)
         {
+
+            if(carController.carRigidBody.velocity.magnitude < 0.2f){
+                timeStationary += Time.deltaTime;
+                if(timeStationary >= 1.5f){
+                    TakeAwayPoints(-0.2f);
+                    Debug.Log("Penalità per essere rimasti fermi per troppo tempo");
+                }
+            }
             // Logica standard per la fase di parcheggio: utilizza il vettore d'azione normalmente
             switch (direction)
             {
