@@ -1,0 +1,25 @@
+behaviors:
+  CarBehavior:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 256               # Aumento del batch size per una maggiore stabilità
+      buffer_size: 4096             # Aumento del buffer size per un training più efficiente
+      learning_rate: 0.0003         # Riduzione del learning rate per un apprendimento più controllato
+      beta: 0.01
+      epsilon: 0.2
+      lambd: 0.9                    
+      num_epoch: 5                  # Aumento del numero di epoch per migliorare l'apprendimento
+      learning_rate_schedule: linear
+    network_settings:
+      normalize: false
+      hidden_units: 256             # Aumento degli hidden units per una rete più complessa
+      num_layers: 3                 # Aumento dei layer per gestire un compito più complesso
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+    max_steps: 1000000              # Riduzione del numero di step massimo a 1 milione
+    time_horizon: 128               # Aumento del time horizon per considerare un intervallo temporale più lungo
+    summary_freq: 5000              
+    checkpoint_interval: 50000      # Diminuzione dell'intervallo tra checkpoint in modo da salvare più spesso
+    threaded: true

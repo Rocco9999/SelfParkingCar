@@ -1,0 +1,8 @@
+{
+    "metadata": {
+        "stats_format_version": "0.2.0",
+        "mlagents_version": "0.22.0",
+        "torch_version": "1.8.1+cpu",
+        "tensorflow_version": "2.3.0"
+    }
+}

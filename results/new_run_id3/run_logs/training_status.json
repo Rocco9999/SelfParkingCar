@@ -1,0 +1,48 @@
+{
+    "CarBehavior": {
+        "checkpoints": [
+            {
+                "steps": 849981,
+                "file_path": "results\\new_run_id3\\CarBehavior\\CarBehavior-849981.onnx",
+                "reward": 4.809688771896712,
+                "creation_time": 1729607102.3930743
+            },
+            {
+                "steps": 899993,
+                "file_path": "results\\new_run_id3\\CarBehavior\\CarBehavior-899993.onnx",
+                "reward": 4.7334900561720135,
+                "creation_time": 1729607408.9461148
+            },
+            {
+                "steps": 949919,
+                "file_path": "results\\new_run_id3\\CarBehavior\\CarBehavior-949919.onnx",
+                "reward": 4.524507812009408,
+                "creation_time": 1729607701.8871188
+            },
+            {
+                "steps": 999988,
+                "file_path": "results\\new_run_id3\\CarBehavior\\CarBehavior-999988.onnx",
+                "reward": 4.887572900346905,
+                "creation_time": 1729607997.2471454
+            },
+            {
+                "steps": 1000008,
+                "file_path": "results\\new_run_id3\\CarBehavior\\CarBehavior-1000008.onnx",
+                "reward": 4.888465469434427,
+                "creation_time": 1729607997.2958007
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1000008,
+            "file_path": "results\\new_run_id3\\CarBehavior.onnx",
+            "reward": 4.888465469434427,
+            "creation_time": 1729607997.2958007
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.2.0",
+        "mlagents_version": "0.22.0",
+        "torch_version": "1.8.1+cpu",
+        "tensorflow_version": "2.3.0"
+    }
+}
