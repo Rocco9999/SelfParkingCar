@@ -1,0 +1,48 @@
+{
+    "CarBehavior": {
+        "checkpoints": [
+            {
+                "steps": 1849968,
+                "file_path": "results\\new_run_id1_nogol_level1\\CarBehavior\\CarBehavior-1849968.onnx",
+                "reward": 6.006288031339645,
+                "creation_time": 1731403871.2981079
+            },
+            {
+                "steps": 1899983,
+                "file_path": "results\\new_run_id1_nogol_level1\\CarBehavior\\CarBehavior-1899983.onnx",
+                "reward": 5.718429839169538,
+                "creation_time": 1731404388.8015878
+            },
+            {
+                "steps": 1949984,
+                "file_path": "results\\new_run_id1_nogol_level1\\CarBehavior\\CarBehavior-1949984.onnx",
+                "reward": 5.904890068635648,
+                "creation_time": 1731404898.0561473
+            },
+            {
+                "steps": 1999972,
+                "file_path": "results\\new_run_id1_nogol_level1\\CarBehavior\\CarBehavior-1999972.onnx",
+                "reward": 5.592077019982613,
+                "creation_time": 1731405387.7340965
+            },
+            {
+                "steps": 2000028,
+                "file_path": "results\\new_run_id1_nogol_level1\\CarBehavior\\CarBehavior-2000028.onnx",
+                "reward": 5.606671795248985,
+                "creation_time": 1731405387.785145
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2000028,
+            "file_path": "results\\new_run_id1_nogol_level1\\CarBehavior.onnx",
+            "reward": 5.606671795248985,
+            "creation_time": 1731405387.785145
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.2.0",
+        "mlagents_version": "0.22.0",
+        "torch_version": "1.8.1+cpu",
+        "tensorflow_version": -1
+    }
+}

@@ -85,7 +85,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ml-agents.extensions": {
-      "version": "file:C:/Users/rocco/OneDrive/Desktop/Università/Information visualizzation/ml-agents-release_10/ml-agents-release_10/com.unity.ml-agents.extensions",
+      "version": "file:C:/Users/danid/ml-agents-release_10/com.unity.ml-agents.extensions",
       "depth": 0,
       "source": "local",
       "dependencies": {
