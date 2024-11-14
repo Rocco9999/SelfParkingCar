@@ -24,6 +24,12 @@ public class CarAgent : BaseAgent
     private float timeStationary;
     private float minDistance;
     public Vector3 nearestGoal;
+    private const float stationaryThreshold = 1.5f; // Soglia di tempo per considerare l'auto ferma
+    private Vector3 lastPosition;
+    private float timeSinceLastDistanceCheck = 0f;
+    private float totalDistanceCovered = 0f;
+    private const float distanceThreshold = 6f; // Soglia di distanza minima
+    private const float checkInterval = 2.0f; // Intervallo di 2 secondi per il controllo
 
     public override void Initialize()
     {
@@ -78,6 +84,10 @@ public class CarAgent : BaseAgent
 
         allValidCenters = new List<HashSet<(Vector3, int)>>();
         allDetectedLineObjects = new List<GameObject>();
+
+        timeSinceLastDistanceCheck = 0f;
+        totalDistanceCovered = 0f;
+        lastPosition = transform.position;
         
         ResetGoalsAndRectangles();
         ResetParkingLotArea();
@@ -85,17 +95,45 @@ public class CarAgent : BaseAgent
 
     private void ResetGoalsAndRectangles()
     {
-        foreach (var goal in placedGoals)
+        // Assicura la distruzione di tutti i goal
+        if (placedGoals != null && placedGoals.Count > 0)
         {
-            if (goal != null) Destroy(goal);
+            foreach (var goal in placedGoals)
+            {
+                if (goal != null)
+                {
+                    Destroy(goal);
+                }
+            }
+            placedGoals.Clear();
         }
-        placedGoals.Clear();
+        else
+        {
+            Debug.LogWarning("No goals to reset.");
+        }
 
-        foreach (var yellowRectangle in placedYellowRectangle)
+        // Assicura la distruzione di tutti i rettangoli gialli
+        if (placedYellowRectangle != null && placedYellowRectangle.Count > 0)
         {
-            if (yellowRectangle != null) Destroy(yellowRectangle);
+            foreach (var yellowRectangle in placedYellowRectangle)
+            {
+                if (yellowRectangle != null)
+                {
+                    Destroy(yellowRectangle);
+                }
+            }
+            placedYellowRectangle.Clear();
         }
-        placedYellowRectangle.Clear();
+        else
+        {
+            Debug.LogWarning("No yellow rectangles to reset.");
+        }
+
+        // Forza la pulizia delle liste in caso ci siano riferimenti null residui
+        placedGoals.RemoveAll(item => item == null);
+        placedYellowRectangle.RemoveAll(item => item == null);
+
+        Debug.Log("Reset goals and yellow rectangles complete.");
     }
 
 
@@ -292,10 +330,10 @@ public class CarAgent : BaseAgent
         else if (currentState == AgentState.Parking)
         {
             // Controllo della velocità per rilevare se l'auto è ferma
-            if (carController.carRigidBody.velocity.magnitude < 0.01f)
+            if (carController.carRigidBody.velocity.magnitude < 0.2f)
             {
                 timeStationary += Time.deltaTime;
-                if (timeStationary >= 1.5f)
+                if (timeStationary >= stationaryThreshold)
                 {
                     // Penalità per essere rimasti fermi troppo a lungo
                     TakeAwayPoints(-0.2f);
@@ -305,6 +343,27 @@ public class CarAgent : BaseAgent
             else
             {
                 timeStationary = 0f; // Reset del timer se l'auto si muove
+            }
+
+            timeSinceLastDistanceCheck += Time.deltaTime;
+
+            // Calcola la distanza percorsa dall'ultima posizione salvata
+            float distanceCovered = Vector3.Distance(transform.position, lastPosition);
+            totalDistanceCovered += distanceCovered;
+            lastPosition = transform.position;
+
+            // Controllo se l'intervallo di tempo ha raggiunto il limite di 2 secondi
+            if (timeSinceLastDistanceCheck >= checkInterval)
+            {
+                if (totalDistanceCovered < distanceThreshold)
+                {
+                    TakeAwayPoints(-0.2f);
+                    Debug.Log("Penalità per distanza percorsa insufficiente in 2 secondi.");
+                }
+
+                // Reset dei contatori per il prossimo intervallo di 2 secondi
+                timeSinceLastDistanceCheck = 0f;
+                totalDistanceCovered = 0f;
             }
             // Logica standard per la fase di parcheggio: utilizza il vettore d'azione normalmente
             switch (direction)
@@ -348,7 +407,7 @@ public class CarAgent : BaseAgent
         {
             StartCoroutine(SwapGroundMaterial(successMaterial, 0.5f));
             EndEpisode();
-            Debug.Log("Episodio terminato con successo");
+            Debug.Log("Ricompensa:" + amount);
         }
     }
 
@@ -358,7 +417,6 @@ public class CarAgent : BaseAgent
         AddReward(amount);
         StartCoroutine(SwapGroundMaterial(failureMaterial, 0.5f));
         EndEpisode();
-        Debug.Log("Episodio terminato con penalità");
     }
 
     public override void Heuristic(float[] actionsOut)

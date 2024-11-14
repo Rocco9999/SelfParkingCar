@@ -82,11 +82,6 @@ public class CarController : MonoBehaviour
         {
             //agent.AddReward(-0.05f); // Penalità per velocità eccessiva
             carRigidBody.velocity = carRigidBody.velocity.normalized * currentMaxSpeed;
-            Debug.Log($"Velocità attuale: {carRigidBody.velocity.magnitude}");
-        }
-        else
-        {
-            Debug.Log($"Velocità attuale: {carRigidBody.velocity.magnitude}");
         }
     }
 

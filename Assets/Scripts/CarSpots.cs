@@ -63,7 +63,6 @@ public class CarSpots : MonoBehaviour
 
         if (parkedCars == null || !parkedCars.Any())
         {
-            Debug.LogError("Nessuna auto parcheggiata trovata per nascondere in CarSpots!");
             return new List<int>();
         }
 
@@ -91,9 +90,9 @@ public class CarSpots : MonoBehaviour
             return;
         }
 
-        howManyCarsToHide = Random.Range(1, howManyCarsToHide);
+        int howManyCarsToHideRandom = Random.Range(1, howManyCarsToHide);
 
-        List<int> carsToHide = GetRandomNumsToHideCars(howManyCarsToHide);
+        List<int> carsToHide = GetRandomNumsToHideCars(howManyCarsToHideRandom);
         int carCounter = 0;
 
         foreach (var car in parkedCars)
@@ -110,7 +109,6 @@ public class CarSpots : MonoBehaviour
                 car.gameObject.SetActive(false);
                 RemovedCarPositions.Add(car.transform.position);
                 RemovedCarRotations.Add(car.transform.rotation);
-                Debug.Log($"Auto nascosta alla posizione: {car.transform.position}");
             }
             else
             {

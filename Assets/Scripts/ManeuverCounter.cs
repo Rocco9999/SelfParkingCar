@@ -57,13 +57,6 @@ public class ManeuverCounter : MonoBehaviour
             Debug.Log("Numero di manovre: " + maneuverCount);
 
             lastForwardVector45 = currentForwardVector;
-
-            // Penalizza se la macchina effettua manovre senza parcheggi rilevati
-            if (noParkingDetected && maneuverCount > maneuverLimit)
-            {
-                agent.AddReward(-0.1f);
-                Debug.Log("Penalità per manovre eccessive senza parcheggi rilevati.");
-            }
         }
     }
 
@@ -136,14 +129,12 @@ public class ManeuverCounter : MonoBehaviour
             float reward = 1.2f; // Ricompensa base
             agent.AddReward(reward);
             Debug.Log($"Ricompensa assegnata per mantenere le manovre sotto il limite: {reward}");
-            Debug.Log($"Numero di manovre: {maneuverCount}");
         }
         else if (isParkedCorrectly)
         {
             float reward = 0.8f; // Ricompensa extra per parcheggio corretto
             agent.AddReward(reward);
             Debug.Log($"Ricompensa assegnata per parcheggio corretto: {reward}");
-            Debug.Log($"Numero di manovre: {maneuverCount}");
         }
     }
 

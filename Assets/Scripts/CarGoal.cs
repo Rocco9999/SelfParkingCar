@@ -33,12 +33,13 @@ public class CarGoal : MonoBehaviour
             Vector3 goalPosition = transform.position;
             float distanceBetweenGoal = Vector3.Distance(goalPosition, agent.nearestGoal);
 
-            if(distanceBetweenGoal > 0.5f){
-                agent.AddReward(-0.2f);
+            if (distanceBetweenGoal > 0.5f)
+            {
+                agent.AddReward(-0.4f);
                 Debug.Log("Ho sbagliato il punto di arrivo, non ho scelto il goal più vicino");
             }
 
-            if(goalType == GoalType.Milestone)
+            if (goalType == GoalType.Milestone)
             {
                 HasCarUsedIt = true;
                 agent.GivePoints(goalReward);
@@ -53,6 +54,7 @@ public class CarGoal : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log("Non ho parcheggiato in modo da essere allineato");
                     agent.TakeAwayPoints();
                 }
             }
