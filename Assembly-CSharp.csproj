@@ -115,6 +115,7 @@
      <Compile Include="Assets\ML-Agents\Examples\Template\Scripts\TemplateAgent.cs" />
      <Compile Include="Assets\ML-Agents\Examples\3DBall\Scripts\Ball3DAgent.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Soccer\Scripts\AgentSoccer.cs" />
+     <Compile Include="Assets\Scripts\SceneSwitcher.cs" />
      <None Include="Assets\ML-Agents\Examples\SharedAssets\Materials\GridPatternShader.shader" />
      <None Include="Assets\ML-Agents\Examples\SharedAssets\Materials\ShaderOutline.shader" />
      <None Include="Assets\ML-Agents\Examples\SharedAssets\Materials\ShaderRadialGrid.shader" />
