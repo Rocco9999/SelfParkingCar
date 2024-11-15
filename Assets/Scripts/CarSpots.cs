@@ -86,8 +86,14 @@ public class CarSpots : MonoBehaviour
 
         if (parkedCars == null || !parkedCars.Any())
         {
-            Debug.LogError("Nessuna auto parcheggiata trovata per la configurazione in Setup!");
-            return;
+            // Ricarica parkedCars ogni volta che viene chiamato Setup()
+            parkedCars = GetComponentsInChildren<CarObstacle>(true)
+                .Where(c => c.CarObstacleTypeValue == CarObstacleType.Car);
+                if (parkedCars == null || !parkedCars.Any())
+                {
+                    Debug.LogError("Nessuna auto parcheggiata trovata per la configurazione in Setup!");
+                    return;
+                }
         }
 
         int howManyCarsToHideRandom = Random.Range(1, howManyCarsToHide);

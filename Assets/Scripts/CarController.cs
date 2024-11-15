@@ -47,7 +47,7 @@ public class CarController : MonoBehaviour
         carRigidBody = GetComponent<Rigidbody>();
     }
 
-    void start()
+    void Start()
     {
         agent = transform.parent.GetComponentInChildren<CarAgent>();
         currentMaxSpeed = maxSpeed;

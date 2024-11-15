@@ -93,6 +93,7 @@
      <Compile Include="Assets\ML-Agents\Examples\SharedAssets\Scripts\Area.cs" />
      <Compile Include="Assets\Scripts\CarController.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Crawler\Scripts\CrawlerAgent.cs" />
+     <Compile Include="Assets\Scripts\SceneSwitcher.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Tennis\Scripts\TennisArea.cs" />
      <Compile Include="Assets\ML-Agents\Examples\FoodCollector\Scripts\FoodCollectorArea.cs" />
      <Compile Include="Assets\Scripts\PlayerAgent.cs" />
@@ -115,7 +116,6 @@
      <Compile Include="Assets\ML-Agents\Examples\Template\Scripts\TemplateAgent.cs" />
      <Compile Include="Assets\ML-Agents\Examples\3DBall\Scripts\Ball3DAgent.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Soccer\Scripts\AgentSoccer.cs" />
-     <Compile Include="Assets\Scripts\SceneSwitcher.cs" />
      <None Include="Assets\ML-Agents\Examples\SharedAssets\Materials\GridPatternShader.shader" />
      <None Include="Assets\ML-Agents\Examples\SharedAssets\Materials\ShaderOutline.shader" />
      <None Include="Assets\ML-Agents\Examples\SharedAssets\Materials\ShaderRadialGrid.shader" />
