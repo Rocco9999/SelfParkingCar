@@ -7,6 +7,10 @@
 
 <p>This project explores the implementation of an autonomous parking system using Reinforcement Learning (RL) algorithms within the Unity ML-Agents framework. The main objective is to train virtual agents capable of performing precision parking maneuvers and adapting to varying simulated conditions. Three independent models were developed and trained to reflect an increasing level of complexity, focusing on optimizing parking detection, penalty management, and minimizing the number of maneuvers required to achieve correct parking.</p>
 
+<h2>Demo Video</h2>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/y1EpDRMuOqk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 <h2>Features</h2>
 <ul>
     <li>Autonomous parking system implemented with RL in Unity ML-Agents.</li>
