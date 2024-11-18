@@ -18,7 +18,7 @@ behaviors:
       extrinsic:
         gamma: 0.99
         strength: 1.0
-    max_steps: 2000000              # Riduzione del numero di step massimo a 1 milione
+    max_steps: 4000000              # Riduzione del numero di step massimo a 1 milione
     time_horizon: 128               # Aumento del time horizon per considerare un intervallo temporale più lungo
     summary_freq: 5000              # Maggiore frequenza di report per monitorare più frequentemente il training
     checkpoint_interval: 50000      # Diminuzione dell'intervallo tra checkpoint in modo da salvare più spesso

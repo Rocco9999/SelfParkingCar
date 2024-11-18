@@ -17,6 +17,9 @@ public class BaseAgent : Agent
     [SerializeField]
     protected Material defaultMaterial;
 
+    [SerializeField]
+    protected Material successPartialMaterial;
+
     protected IEnumerator SwapGroundMaterial(Material mat, float time)
     {
         groundMeshRenderer.material = mat;

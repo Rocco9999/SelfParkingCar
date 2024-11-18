@@ -135,7 +135,6 @@ public class ParkingSpaceDetector : MonoBehaviour
                                 if (collider.CompareTag("car"))
                                 {
                                     containsCar = true;
-                                    Debug.Log("Rettangolo contiene un'auto.");
                                     break;
                                 }
                             }
@@ -143,7 +142,6 @@ public class ParkingSpaceDetector : MonoBehaviour
                             if (!containsCar)
                             {
                                 validRectangleCenters.Add((rectangleCenter, 90));
-                                Debug.Log("Rettangolo valido aggiunto alla lista.");
                             }
                         }
                     }

@@ -6800,7 +6800,7 @@ PrefabInstance:
     - target: {fileID: 8208582799193707272, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 59bfa79395a13454388bd78c7d189b9f, type: 3}
+      objectReference: {fileID: 5022602860645237092, guid: f16c0b476b1e6104ebf51d66b4c0c11d, type: 3}
     - target: {fileID: 8208582799193707272, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
       value: 17
@@ -6809,6 +6809,10 @@ PrefabInstance:
       propertyPath: m_InferenceDevice
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8208582799193707273, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
+      propertyPath: successPartialMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 1f9e91ed65445c74d89c92c8f53ca439, type: 2}
     - target: {fileID: 8208582799193707274, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
       propertyPath: maxSpeed
       value: 10
@@ -6856,6 +6860,10 @@ PrefabInstance:
     - target: {fileID: 8208582799193707319, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
       propertyPath: m_EndVerticalOffset
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8208582799193707319, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
+      propertyPath: m_RaysPerDirection
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8208987238478658245, guid: 433de58ff5320b4489fa2ff704035b06, type: 3}
       propertyPath: m_Layer

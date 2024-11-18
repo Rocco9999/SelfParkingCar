@@ -2,6 +2,7 @@
 using Unity.MLAgents.Sensors;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using static CarController;
 
 public class CarAgent : BaseAgent
@@ -13,14 +14,12 @@ public class CarAgent : BaseAgent
     private Rigidbody carControllerRigidBody;
     private CarSpots carSpots;
     private ParkingSpaceDetector parkingSpaceDetector;
-    private List<RayPerceptionSensorComponent3D> straightSensors;
     private List<RayPerceptionSensorComponent3D> angledSensors;
-    private GameObject currentCarGoal = null;
-    private GameObject currentYellowRectangle = null;
     private List<GameObject> placedGoals = new List<GameObject>();
     private List<GameObject> placedYellowRectangle = new List<GameObject>();
     private List<HashSet<(Vector3, int)>> allValidCenters;
     private List<GameObject> allDetectedLineObjects;
+    private List<GameObject> allDetectedPedestrian;
     private float timeStationary;
     private float minDistance;
     public Vector3 nearestGoal;
@@ -30,6 +29,9 @@ public class CarAgent : BaseAgent
     private float totalDistanceCovered = 0f;
     private const float distanceThreshold = 6f; // Soglia di distanza minima
     private const float checkInterval = 2.0f; // Intervallo di 2 secondi per il controllo
+    private Direction lastDirection = Direction.Idle; // Direzione precedente
+    private int directionForwardCount = 0; // Contatore dei cambi di direzione
+    private int directionBackwardCount = 0; // Contatore dei cambi di direzione
 
     public override void Initialize()
     {
@@ -43,7 +45,6 @@ public class CarAgent : BaseAgent
         carSpots = transform.parent.GetComponentInChildren<CarSpots>();
 
         parkingSpaceDetector = GetComponent<ParkingSpaceDetector>();
-        straightSensors = new List<RayPerceptionSensorComponent3D>();
         angledSensors = new List<RayPerceptionSensorComponent3D>();
 
         foreach (var sensor in GetComponentsInChildren<RayPerceptionSensorComponent3D>())
@@ -60,7 +61,8 @@ public class CarAgent : BaseAgent
     public enum AgentState
     {
         SearchingForParking, // Fase di ricerca del parcheggio
-        Parking // Fase di parcheggio
+        Parking, // Fase di parcheggio
+        EpisodeEnded         // Stato finale, episodio terminato TEST
     }
 
     public AgentState currentState;
@@ -84,6 +86,7 @@ public class CarAgent : BaseAgent
 
         allValidCenters = new List<HashSet<(Vector3, int)>>();
         allDetectedLineObjects = new List<GameObject>();
+        allDetectedPedestrian = new List<GameObject>();
 
         timeSinceLastDistanceCheck = 0f;
         totalDistanceCovered = 0f;
@@ -147,6 +150,7 @@ public class CarAgent : BaseAgent
         carControllerRigidBody.velocity = Vector3.zero;
         carControllerRigidBody.angularVelocity = Vector3.zero;
         carSpots.Setup();
+        carSpots.ResetEpisodeState();
     }
 
     void Update()
@@ -162,7 +166,7 @@ public class CarAgent : BaseAgent
         {
             maneuverCounter.ManeuverBackRecall();
         }
-
+        
         AnalyzeAndPlaceGoalInNearestEmptyParking();
     }
 
@@ -170,17 +174,7 @@ public class CarAgent : BaseAgent
     {
         Debug.Log("Inizio dell'analisi dei parcheggi rettangolari e parallelepipedi");
 
-        List<GameObject> straightLineObjects = parkingSpaceDetector.DetectLineObjectsWithSensors(straightSensors);
-
         List<GameObject> angledLineObjects = parkingSpaceDetector.DetectLineObjectsWithSensors(angledSensors);
-
-        foreach (var lineObject in straightLineObjects)
-        {
-            if (!allDetectedLineObjects.Contains(lineObject))
-            {
-                allDetectedLineObjects.Add(lineObject);
-            }
-        }
 
         foreach (var lineObject in angledLineObjects)
         {
@@ -226,6 +220,7 @@ public class CarAgent : BaseAgent
                 // Controlla se un goal è già presente nell'intorno del centro attuale
                 foreach (var goal in placedGoals)
                 {
+                    if (goal == null) continue; // Salta i goal già distrutti
                     if (Vector3.Distance(goal.transform.position, position) < minDistanceBetweenGoals)
                     {
                         isPositionOccupied = true;
@@ -249,7 +244,7 @@ public class CarAgent : BaseAgent
                         placedGoals.Add(newGoal); // Aggiungi il nuovo goal alla lista
 
                         // Instanzia il rettangolo giallo
-                        var newYellowRectangle = Instantiate(carSpots.YellowRectanglePrefab, position, goalRotation);
+                        var newYellowRectangle = Instantiate(carSpots.YellowRectanglePrefab, new Vector3(position.x, -0.0496f, position.z), goalRotation);
                         newYellowRectangle.tag = "yellowRectangle";
                         newYellowRectangle.transform.parent = transform.parent;
                         placedYellowRectangle.Add(newYellowRectangle);
@@ -261,6 +256,9 @@ public class CarAgent : BaseAgent
                 }
             }
         }
+        // Rimuovi riferimenti null dalla lista
+        placedGoals.RemoveAll(goal => goal == null);
+        placedYellowRectangle.RemoveAll(rectangle => rectangle == null);
     }
 
 
@@ -309,6 +307,11 @@ public class CarAgent : BaseAgent
 
     public override void OnActionReceived(float[] vectorAction)
     {
+        if (currentState == AgentState.EpisodeEnded)
+        {
+            // Interrompe qualsiasi azione quando lo stato è EpisodeEnded
+            return;
+        }
         var direction = Mathf.FloorToInt(vectorAction[0]);
 
         // Logica per le due fasi
@@ -361,10 +364,34 @@ public class CarAgent : BaseAgent
                     Debug.Log("Penalità per distanza percorsa insufficiente in 2 secondi.");
                 }
 
+                // Penalità per troppi cambi di direzione avanti/indietro
+                if (directionForwardCount >= 6 && directionBackwardCount >= 6) // Soglia configurabile
+                {
+                    int totalChanges = directionForwardCount + directionBackwardCount;
+                    TakeAwayPoints(-0.05f * totalChanges); // Penalità proporzionale ai cambi di direzione
+                    Debug.Log($"Penalità per {totalChanges} cambi di direzione avanti/indietro in 2 secondi.");
+                }
+
                 // Reset dei contatori per il prossimo intervallo di 2 secondi
                 timeSinceLastDistanceCheck = 0f;
                 totalDistanceCovered = 0f;
+                directionForwardCount = 0;
+                directionBackwardCount = 0;
             }
+
+            // Logica per rilevare i cambi di direzione
+            if ((carController.CurrentDirection == Direction.MoveForward && lastDirection != Direction.MoveForward))
+            {
+                directionForwardCount++;
+                Debug.Log($"Cambio di direzione rilevato: {directionForwardCount} cambi finora.");
+            }else if ((carController.CurrentDirection == Direction.MoveBackward && lastDirection != Direction.MoveBackward))
+            {
+                directionBackwardCount++;
+                Debug.Log($"Cambio di direzione rilevato: {directionBackwardCount} cambi finora.");
+            }
+
+            lastDirection = carController.CurrentDirection;
+
             // Logica standard per la fase di parcheggio: utilizza il vettore d'azione normalmente
             switch (direction)
             {
@@ -390,7 +417,7 @@ public class CarAgent : BaseAgent
     }
    
 
-    public void GivePoints(float amount = 1.0f, bool isFinal = false)
+    public void GivePoints(float amount = 1.0f, bool isFinal = false, bool isAligned = false)
     {
         AddReward(amount);
 
@@ -403,20 +430,72 @@ public class CarAgent : BaseAgent
             AddReward(0.8f);
         }
 
-        if (isFinal)
+        if (isFinal && isAligned)
         {
-            StartCoroutine(SwapGroundMaterial(successMaterial, 0.5f));
+            currentState = AgentState.EpisodeEnded;
+            Debug.Log($"Ricompensa aggiunta: {amount}. Ricompensa cumulativa: {GetCumulativeReward()}");
+            StartCoroutine(HandleEpisodeEnd(successMaterial, true));
             EndEpisode();
-            Debug.Log("Ricompensa:" + amount);
+        } else if (isFinal && !isAligned)
+        {
+            currentState = AgentState.EpisodeEnded;
+            Debug.Log($"Ricompensa aggiunta: {amount}. Ricompensa cumulativa: {GetCumulativeReward()}");
+            StartCoroutine(HandleEpisodeEnd(successPartialMaterial, true));
+            EndEpisode();
         }
     }
 
     public void TakeAwayPoints(float amount = -0.01f)
     {
-        Debug.Log("Tolgo punti: " + amount);
+        Debug.Log($"Tolgo punti: {amount}. Ricompensa cumulativa: {GetCumulativeReward()}");
         AddReward(amount);
-        StartCoroutine(SwapGroundMaterial(failureMaterial, 0.5f));
+        currentState = AgentState.EpisodeEnded;
+        StartCoroutine(HandleEpisodeEnd(failureMaterial));
         EndEpisode();
+    }
+
+    private IEnumerator HandleEpisodeEnd(Material material, bool calledFromGivePoints = false)
+    {
+        Debug.Log("Episodio terminato");
+
+        if (calledFromGivePoints)
+        {
+            // Continua a muovere l'auto verso il goal
+            FindNearestGoal();
+            float elapsedTime = 0f;
+            if (nearestGoal != Vector3.zero)
+            {
+                while (Vector3.Distance(transform.position, nearestGoal) > 1.0f && elapsedTime < 2.0f)
+                {
+                    elapsedTime += Time.deltaTime;
+                    
+                    
+                }
+
+                if (elapsedTime >= 2.0f)
+                {
+                    Debug.LogWarning("Timeout raggiunto durante il movimento verso il goal.");
+                }
+            }
+        }
+
+        // Ferma tutti i movimenti dell'auto
+        carController.CurrentDirection = Direction.Idle;
+        carControllerRigidBody.velocity = Vector3.zero;
+        carControllerRigidBody.angularVelocity = Vector3.zero;
+
+        // Cambia il materiale del terreno per indicare successo/fallimento
+        if (material != null)
+        {
+            StartCoroutine(SwapGroundMaterial(material, 0.5f));
+        }
+
+        yield return new WaitForSeconds(0.1f); // Attendi un secondo prima del reset
+        Level4Detection detection = GetComponent<Level4Detection>();
+        if (detection != null)
+        {
+            detection.FinalizeEpisode();
+        }
     }
 
     public override void Heuristic(float[] actionsOut)
