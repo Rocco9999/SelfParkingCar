@@ -4,7 +4,7 @@ This project explores the implementation of an autonomous parking system using R
 
 ## Demo Video
 
-[![Demo Video](https://img.youtube.com/vi/y1EpDRMuOqk/0.jpg)](https://www.youtube.com/watch?v=y1EpDRMuOqk)
+[![Demo Video](https://img.youtube.com/vi/y1EpDRMuOqk/0.jpg)](https://youtu.be/fHntIAaUfN4)
 
 Click the image above to watch the demo video on YouTube.
 

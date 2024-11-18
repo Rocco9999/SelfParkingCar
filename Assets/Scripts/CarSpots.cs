@@ -21,6 +21,9 @@ public class CarSpots : MonoBehaviour
     private GameObject waypointPrefab = null; // Prefab per il waypoint delle auto
 
     [SerializeField]
+    private int howManyCarsToHideMin = 1;
+
+    [SerializeField]
     private int howManyCarsToHide = 1;
 
     private IEnumerable<CarObstacle> parkedCars;
@@ -113,7 +116,7 @@ public class CarSpots : MonoBehaviour
                 }
         }
 
-        int howManyCarsToHideRandom = Random.Range(2, howManyCarsToHide);
+        int howManyCarsToHideRandom = Random.Range(howManyCarsToHideMin, howManyCarsToHide);
 
         List<int> carsToHide = GetRandomNumsToHideCars(howManyCarsToHideRandom);
         int carCounter = 0;

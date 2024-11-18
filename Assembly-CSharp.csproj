@@ -59,10 +59,12 @@
      <Compile Include="Assets\ML-Agents\Examples\SharedAssets\Scripts\Monitor.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Soccer\Scripts\SoccerFieldArea.cs" />
      <Compile Include="Assets\ML-Agents\Examples\3DBall\Scripts\Ball3DHardAgent.cs" />
+     <Compile Include="Assets\Scripts\PedestrianTrigger.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Soccer\Scripts\SoccerSettings.cs" />
      <Compile Include="Assets\CarCountManovre.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Bouncer\Scripts\BouncerTarget.cs" />
      <Compile Include="Assets\ML-Agents\Examples\PushBlock\Scripts\PushAgentBasic.cs" />
+     <Compile Include="Assets\Scripts\Level4Detection.cs" />
      <Compile Include="Assets\ML-Agents\Examples\GridWorld\Scripts\GridAgent.cs" />
      <Compile Include="Assets\Scripts\BaseAgent.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Pyramids\Scripts\PyramidArea.cs" />
@@ -75,6 +77,7 @@
      <Compile Include="Assets\ML-Agents\Examples\WallJump\Scripts\WallJumpAgent.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Soccer\Scripts\SoccerBallController.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Tennis\Scripts\HitWall.cs" />
+     <Compile Include="Assets\Scripts\PedestrianController.cs" />
      <Compile Include="Assets\Scripts\CarAgent.cs" />
      <Compile Include="Assets\ML-Agents\Examples\SharedAssets\Scripts\FlyCamera.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Basic\Scripts\BasicSensorComponent.cs" />
@@ -88,6 +91,7 @@
      <Compile Include="Assets\ML-Agents\Examples\FoodCollector\Scripts\FoodCollectorSettings.cs" />
      <Compile Include="Assets\ML-Agents\Examples\SharedAssets\Scripts\DirectionIndicator.cs" />
      <Compile Include="Assets\Scripts\ManeuverCounter.cs" />
+     <Compile Include="Assets\Scripts\CarMovement.cs" />
      <Compile Include="Assets\ML-Agents\Examples\PushBlock\Scripts\GoalDetect.cs" />
      <Compile Include="Assets\ML-Agents\Examples\SharedAssets\Scripts\SensorBase.cs" />
      <Compile Include="Assets\ML-Agents\Examples\SharedAssets\Scripts\Area.cs" />
@@ -116,10 +120,6 @@
      <Compile Include="Assets\ML-Agents\Examples\Template\Scripts\TemplateAgent.cs" />
      <Compile Include="Assets\ML-Agents\Examples\3DBall\Scripts\Ball3DAgent.cs" />
      <Compile Include="Assets\ML-Agents\Examples\Soccer\Scripts\AgentSoccer.cs" />
-     <Compile Include="Assets\Scripts\PedestrianController.cs" />
-     <Compile Include="Assets\Scripts\PedestrianTrigger.cs" />
-     <Compile Include="Assets\Scripts\Level4Detection.cs" />
-     <Compile Include="Assets\Scripts\CarMovement.cs" />
      <None Include="Assets\ML-Agents\Examples\SharedAssets\Materials\GridPatternShader.shader" />
      <None Include="Assets\ML-Agents\Examples\SharedAssets\Materials\ShaderOutline.shader" />
      <None Include="Assets\ML-Agents\Examples\SharedAssets\Materials\ShaderRadialGrid.shader" />
